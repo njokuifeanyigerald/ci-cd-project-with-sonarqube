@@ -37,6 +37,24 @@ pipeline{
         
             }
         }
+        stage("Integration testing"){
+            steps{
+                echo "====++++executing Integration testing++++===="
+                sh 'mvn verify -DskipUnitTests'
+            }
+            post{
+                always{
+                    echo "====++++always++++===="
+                }
+                success{
+                    echo "====++++Integration testing executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Integration testing execution failed++++===="
+                }
+        
+            }
+        }
     }
     post{
         always{
