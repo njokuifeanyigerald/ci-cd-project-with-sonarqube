@@ -1,6 +1,24 @@
 pipeline{
     agent any
     stages{
+        stage("Email message"){
+            steps{
+                echo "====++++executing Email message++++===="
+                emailext body: 'exploring the created pipeline', subject: 'CI/CD', to: 'brainboyrichmond@gmail.com'
+            }
+            post{
+                always{
+                    echo "====++++always++++===="
+                }
+                success{
+                    echo "====++++Email message executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Email message execution failed++++===="
+                }
+        
+            }
+        }
         stage("Git checkout"){
             steps{
                 echo "====++++executing checkout++++===="
