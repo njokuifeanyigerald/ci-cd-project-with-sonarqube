@@ -19,6 +19,24 @@ pipeline{
         
             }
         }
+        stage("UNIT Testing"){
+            steps{
+                echo "====++++executing UNIT Testing++++===="
+                sh 'mvn test'
+            }
+            post{
+                always{
+                    echo "====++++always++++===="
+                }
+                success{
+                    echo "====++++UNIT Testing executed successfully++++===="
+                }
+                failure{
+                    echo "====++++UNIT Testing execution failed++++===="
+                }
+        
+            }
+        }
     }
     post{
         always{
