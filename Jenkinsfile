@@ -1,7 +1,6 @@
 pipeline{
     agent any
-    stages{
-        stage("Git checkout"){
+    stages{        stage("Git checkout"){
             steps{
                 echo "====++++executing checkout++++===="
                 git 'https://github.com/njokuifeanyigerald/ci-cd-project-with-sonarqube.git'
@@ -51,6 +50,24 @@ pipeline{
                 }
                 failure{
                     echo "====++++Integration testing execution failed++++===="
+                }
+        
+            }
+        }
+        stage("Maven Build"){
+            steps{
+                echo "====++++executing Maven Build++++===="
+                sh 'mvn clean install '
+            }
+            post{
+                always{
+                    echo "====++++always++++===="
+                }
+                success{
+                    echo "====++++Maven Build executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Maven Build execution failed++++===="
                 }
         
             }
