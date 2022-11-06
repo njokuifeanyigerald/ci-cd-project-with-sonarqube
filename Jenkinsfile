@@ -63,7 +63,7 @@ pipeline{
         stage("Static Code Analysis"){
             steps{
                 echo "====++++executing Static Code Analysis++++===="
-                scripts{
+                script{
                     withSonarQubeEnv(credentialsId: 'sonarQubeToken') {
                         // some block
                         sh 'mvn clean package sonar:sonar'
