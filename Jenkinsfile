@@ -6,9 +6,6 @@ pipeline{
                 git 'https://github.com/njokuifeanyigerald/ci-cd-project-with-sonarqube.git'
             }
             post{
-                always{
-                    echo "====++++always++++===="
-                }
                 success{
                     echo "====++++succesfully checked out git repo++++===="
                 }
@@ -24,9 +21,6 @@ pipeline{
                 sh 'mvn test'
             }
             post{
-                always{
-                    echo "====++++always++++===="
-                }
                 success{
                     echo "====++++UNIT Testing executed successfully++++===="
                 }
@@ -42,9 +36,6 @@ pipeline{
                 sh 'mvn verify -DskipUnitTests'
             }
             post{
-                always{
-                    echo "====++++always++++===="
-                }
                 success{
                     echo "====++++Integration testing executed successfully++++===="
                 }
@@ -60,9 +51,6 @@ pipeline{
                 sh 'mvn clean install '
             }
             post{
-                always{
-                    echo "====++++always++++===="
-                }
                 success{
                     echo "====++++Maven Build executed successfully++++===="
                 }
@@ -72,11 +60,26 @@ pipeline{
         
             }
         }
+        stage("Static Code Analysis"){
+            steps{
+                echo "====++++executing Static Code Analysis++++===="
+                withSonarQubeEnv(credentialsId: 'sonarQubeToken') {
+                    // some block
+                    sh 'mvn clean package sonar:sonar'
+                }  
+            }
+            post{
+                success{
+                    echo "====++++Static Code Analysis executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Static Code Analysis execution failed++++===="
+                }
+        
+            }
+        }
     }
     post{
-        always{
-            echo "========always========"
-        }
         success{
             echo "========pipeline executed successfully ========"
         }
