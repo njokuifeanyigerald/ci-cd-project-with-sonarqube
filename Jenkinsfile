@@ -80,7 +80,7 @@ pipeline{
         
             }
         }
-        // stage("Quality code status"){
+        stage("Quality code status"){
             // remember to add sonarqube webhook for jenkins
             
             steps{
