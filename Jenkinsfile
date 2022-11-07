@@ -80,27 +80,15 @@ pipeline{
         
             }
         }
-        stage("Quality code status"){
-            // remember to add sonarqube webhook for jenkins
+        stage("Quality Gate"){
+            timeout(time: 1, unit: 'HOURS') {
+                def qg = waitForQualityGate()
+                if (qg.status != 'OK') {
+                    error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                }
+            }
+        }   
             
-            steps{
-                echo "====++++executing Quality code status++++===="
-                script{
-                    // waitForQualityGate abortPipeline: true, credentialsId: 'sonarQubeToken'
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-webhook'
-                }
-            }
-            post{
-                success{
-                    echo "====++++Quality code status executed successfully++++===="
-                }
-                failure{
-                    echo "====++++Quality code status execution failed++++===="
-                }
-        
-            }
-        }
-        
         
     }
     post{
