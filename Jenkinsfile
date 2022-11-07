@@ -80,6 +80,23 @@ pipeline{
         
             }
         }
+        stage("Quality code status"){
+            steps{
+                echo "====++++executing Quality code status++++===="
+                script{
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarQubeToken'
+                }
+            }
+            post{
+                success{
+                    echo "====++++Quality code status executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Quality code status execution failed++++===="
+                }
+        
+            }
+        }
     }
     post{
         success{
