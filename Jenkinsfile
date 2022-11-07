@@ -81,6 +81,8 @@ pipeline{
             }
         }
         stage("Quality code status"){
+            // remember to add sonarqube webhook for jenkins
+            
             steps{
                 echo "====++++executing Quality code status++++===="
                 script{
