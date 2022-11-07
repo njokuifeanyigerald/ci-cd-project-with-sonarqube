@@ -80,14 +80,28 @@ pipeline{
         
             }
         }
-        stage("Quality Gate 1") {
-            steps {
+        // stage("Quality code status"){
+            // remember to add sonarqube webhook for jenkins
+            
+            steps{
+                echo "====++++executing Quality code status++++===="
                 script{
-                    waitForQualityGate abortPipeline: true
+                    // waitForQualityGate abortPipeline: true, credentialsId: 'sonarQubeToken'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-webhook'
                 }
             }
+            post{
+                success{
+                    echo "====++++Quality code status executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Quality code status execution failed++++===="
+                }
+        
+            }
         }
-    
+        
+        
     }
     post{
         success{
