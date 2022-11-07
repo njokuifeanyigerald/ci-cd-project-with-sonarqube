@@ -86,7 +86,7 @@ pipeline{
             steps{
                 echo "====++++executing Quality code status++++===="
                 script{
-                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarQubeToken'
+                    waitForQualityGate abortPipeline: true, credentialsId: 'sonarQubeToken'
                 }
             }
             post{
