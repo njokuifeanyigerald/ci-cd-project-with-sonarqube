@@ -82,9 +82,46 @@ pipeline{
         }
         stage("Quality Gate"){
             steps{
+                echo "====++++executing Quality Gate++++===="
                 script{
                     waitForQualityGate abortPipeline: false, credentialsId: 'sonarQubeToken'
                 }
+            }
+            post{
+                
+                success{
+                    echo "====++++Quality Gate executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Quality Gate execution failed++++===="
+                }
+        
+            }
+        }
+        stage("upload war files to nexus"){
+            steps{
+                echo "====++++executing upload war files to nexus++++===="
+                script{
+                    nexusArtifactUploader artifacts: [
+                        [
+                            artifactId: 'springboot',
+                            classifier: '', file: 'target/Uber.jar', type: 'jar'
+                        ]
+                    ],
+                    credentialsId: 'Nexus-auth', groupId: 'com.example',
+                    nexusUrl: '127.0.0.1:8081', nexusVersion: 'nexus3', 
+                    protocol: 'http', repository: 'demoapp', version: '1.0.0'
+        }
+
+            }
+            post{
+                success{
+                    echo "====++++upload war files to nexus executed successfully++++===="
+                }
+                failure{
+                    echo "====++++upload war files to nexus execution failed++++===="
+                }
+        
             }
         }   
             
