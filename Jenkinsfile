@@ -104,6 +104,9 @@ pipeline{
                 script{
                     // to automatically read the pom.xml file inorder to get the version
                     def readPomVersion = readMavenPom file: 'pom.xml'
+
+                    // if it ends with snapshot
+                    def nexusRepo = readMavenPom.version.endwith("SNAPSHOT") ? "demoapp-snapshot" : "demoapp"
                     
                     nexusArtifactUploader artifacts: [
                         [
