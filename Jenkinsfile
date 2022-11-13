@@ -135,9 +135,9 @@ pipeline{
             steps{
                 echo "====++++executing Docker Image Build++++===="
                 script {
-                    sh "docker image build -t $JOB_NAME:v1.$BUILD_ID"
+                    sh "docker image build -t $JOB_NAME:v1.$BUILD_ID ."
                     sh "docker image tag $JOB_NAME:v1.$BUILD_ID bopgeek/$JOB_NAME:v1.$BUILD_ID"
-                    sh "docker image tag $JOB_NAME:v1.$BUILD_ID bopgeek/$JOB_NAME:v1.$BUILD_ID"
+                    sh "docker image tag $JOB_NAME:v1.$BUILD_ID bopgeek/$JOB_NAME:v1.latest"
                 }
             }
             post{
