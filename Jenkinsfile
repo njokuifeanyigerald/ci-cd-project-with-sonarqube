@@ -117,7 +117,7 @@ pipeline{
                     credentialsId: 'Nexus-auth', groupId: 'com.example',
                     nexusUrl: '127.0.0.1:8081', nexusVersion: 'nexus3', 
                     protocol: 'http', repository: nexusRepo, version: "${readPomVersion.version}"
-        }
+                }
 
             }
             post{
@@ -126,6 +126,26 @@ pipeline{
                 }
                 failure{
                     echo "====++++upload war files to nexus execution failed++++===="
+                }
+        
+            }
+        }
+
+        stage("Docker Image Build"){
+            steps{
+                echo "====++++executing Docker Image Build++++===="
+                script {
+                    sh "docker image build -t $JOB_NAME:v1.$BUILD_ID"
+                    sh "docker image tag $JOB_NAME:v1.$BUILD_ID bopgeek/$JOB_NAME:v1.$BUILD_ID"
+                    sh "docker image tag $JOB_NAME:v1.$BUILD_ID bopgeek/$JOB_NAME:v1.$BUILD_ID"
+                }
+            }
+            post{
+                success{
+                    echo "====++++Docker Image Build executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Docker Image Build execution failed++++===="
                 }
         
             }
