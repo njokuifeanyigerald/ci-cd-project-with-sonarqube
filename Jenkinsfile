@@ -102,6 +102,11 @@ pipeline{
             steps{
                 echo "====++++executing upload war files to nexus++++===="
                 script{
+                    // to automatically read the pom.xml file inorder to get the version
+                    def pom = readMavenPom file: 'pom.xml'
+                    //Do some manipulation
+                    writeMavenPom model: pom
+
                     nexusArtifactUploader artifacts: [
                         [
                             artifactId: 'springboot',
@@ -110,7 +115,7 @@ pipeline{
                     ],
                     credentialsId: 'Nexus-auth', groupId: 'com.example',
                     nexusUrl: '127.0.0.1:8081', nexusVersion: 'nexus3', 
-                    protocol: 'http', repository: 'demoapp', version: '1.0.0'
+                    protocol: 'http', repository: 'demoapp', version: "${pom.version}"
         }
 
             }
