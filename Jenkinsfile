@@ -149,7 +149,29 @@ pipeline{
                 }
         
             }
-        }   
+        } 
+
+        stage("push image to dockerHub"){
+            steps{
+                echo "====++++executing push image to dockerHub++++===="
+                script{
+                    withCredentials([string(credentialsId: 'DockerHub', variable: 'docker-hub-cred')]) {
+                        // some block
+                        sh 'docker login -u bopgeek -p ${docker-hub-cred}'
+                    }
+                }
+            }
+            post{
+                
+                success{
+                    echo "====++++push image to dockerHub executed successfully++++===="
+                }
+                failure{
+                    echo "====++++push image to dockerHub execution failed++++===="
+                }
+        
+            }
+        }  
             
         
     }
