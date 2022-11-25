@@ -155,7 +155,7 @@ pipeline{
             steps{
                 echo "====++++executing push image to dockerHub++++===="
                 script{
-                    withCredentials([string(credentialsId: 'DockerHub', variable: 'docker-hub-cred')]) {
+                    withCredentials([string(credentialsId: 'dockerhub_cred', variable: 'docker-hub-cred')]) {
                         // some block
                         sh 'docker login -u bopgeek -p ${docker-hub-cred}'
                         sh 'docker build push bopgeek/$JOB_NAME:v1.$BUILD_ID'
