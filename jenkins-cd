@@ -43,7 +43,7 @@ pipeline {
                 scripts{
                     def apply = false
                     try {
-                        input(message: 'please comfirm the apply to initiate the deployment', ok: "Ready to apply the config")
+                        input(message: 'please comfirm the apply to initiate the deployment', ok: 'Ready to apply the config')
                         apply = true
                     }catch(err){
                         apply = false
@@ -51,7 +51,7 @@ pipeline {
                     }
                     if(apply){
                         // to apply all yaml k8s manifest files
-                        sh  """
+                        sh """
                             kubeclt apply -f .
                             """;
                     }
