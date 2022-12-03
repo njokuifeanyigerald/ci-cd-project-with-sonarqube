@@ -9,8 +9,8 @@ pipeline {
 
     environment{
         // already created the keys in the manage credentials in my local jenkins, you can do yours online using AWS,GCP, AZURE
-        ACCESS_KEY =  credentials('AwsSecretTest')
-        SECRET_KEY = credentials('AwsAccessTest')
+        // ACCESS_KEY =  credentials('AwsSecretTest')
+        // SECRET_KEY = credentials('AwsAccessTest')
 
     }
 
