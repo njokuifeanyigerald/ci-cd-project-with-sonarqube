@@ -7,14 +7,14 @@ pipeline {
         string(name: "region", defaultValue: 'eu-west-2', description: "Eks cluster region")
     }
 
-    // environment{
-    //     // already created the keys in the manage credentials in my local jenkins
-    //     //  you can do yours online using AWS,GCP, AZURE
+    environment{
+        // already created the keys in the manage credentials in my local jenkins
+        //  you can do yours online using AWS,GCP, AZURE
 
-    //     ACCESS_KEY =  credentials('AwsSecretTest')
-    //     SECRET_KEY = credentials('AwsAccessTest')
+        ACCESS_KEY =  credentials('AwsSecretTest')
+        SECRET_KEY = credentials('AwsAccessTest')
 
-    // }
+    }
 
     stages {
         stage('git checkout'){
@@ -28,7 +28,7 @@ pipeline {
         // stage('eks connect'){
         //     steps{
         //         sh """
-        //             aws configure set aws_access_key_id "${ACCESS_KEY}"
+        //             aws configure set aws_access_key_id "$ACCESS_KEY"
         //             aws configure set aww_secret_access_key "$SECRET_KEY"
         //             aws configure set region ${params.region}
         //             aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
