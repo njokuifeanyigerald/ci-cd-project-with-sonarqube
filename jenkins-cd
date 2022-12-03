@@ -1,0 +1,11 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('git checkout'){
+            steps{
+                git credentialsId: 'github-access', url: 'https://github.com/njokuifeanyigerald/ci-cd-project-with-sonarqube.git'
+            }
+        }
+    }
+}

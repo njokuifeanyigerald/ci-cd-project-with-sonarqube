@@ -1,6 +1,7 @@
 pipeline{
     agent any
-    stages{        stage("Git checkout"){
+    stages{        
+        stage("Git checkout"){
             steps{
                 echo "====++++executing checkout++++===="
                 git 'https://github.com/njokuifeanyigerald/ci-cd-project-with-sonarqube.git'
