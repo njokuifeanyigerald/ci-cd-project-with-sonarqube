@@ -1,10 +1,59 @@
 pipeline {
     agent any
 
+    parameters{
+        choice(name: "action", choices: "create\ndestroy\ndestroyekscluster", description: 'create/update or destroy the eks cluster')
+        string(name: 'cluster', defaultValue: 'demo-cluster', description: "Eks cluster name")
+        string(name: "region", defaultValue: 'eu-west-2', description: "Eks cluster region")
+    }
+
+    environment{
+        // already created the keys in the manage credentials in my local jenkins, you can do yours online using AWS,GCP, AZURE
+        ACCESS_KEY =  credentials('AwsSecretTest')
+        SECRET_KEY = credentials('AwsAccessTest')
+
+    }
+
     stages {
         stage('git checkout'){
             steps{
                 git credentialsId: 'github-access', url: 'https://github.com/njokuifeanyigerald/ci-cd-project-with-sonarqube.git'
+
+                
+            }
+        }
+
+        // stage('eks connect'){
+        //     steps{
+        //         sh """
+        //             aws configure set aws_access_key_id "${ACCESS_KEY}"
+        //             aws configure set aww_secret_access_key "$SECRET_KEY"
+        //             aws configure set region ${params.region}
+        //             aws eks --region ${params.region} update-kubeconfig --name ${params.cluster}
+        //            """;
+        //     }
+        // }
+        
+        stage('EKS/local-k8s deployment'){
+            // if action in the parameter choices is equal to create
+            when( expression  {params.action == 'create'})
+            steps{
+                scripts{
+                    def apply = false
+                    try {
+                        input(message: 'please comfirm the apply to initiate the deployment', ok: "Ready to apply the config")
+                        apply = true
+                    }catch(err){
+                        apply = false
+                        CurrentBuild.result = 'UNSTABLE'
+                    }
+                    if(apply){
+                        // to apply all yaml k8s manifest files
+                        sh  """
+                            kubeclt apply -f .
+                            """;
+                    }
+                }
             }
         }
     }
