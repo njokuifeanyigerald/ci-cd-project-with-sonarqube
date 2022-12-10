@@ -36,7 +36,7 @@ pipeline {
         //     }
         // }
         
-        stage('eks coonect'){
+        stage('eks connect'){
             // if action in the parameter choices is equal to create
             when( expression  {params.action == 'create'})
             steps{
