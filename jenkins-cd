@@ -36,7 +36,7 @@ pipeline {
         //     }
         // }
         
-        stage('EKS/local-k8s deployment'){
+        stage('eks coonect'){
             // if action in the parameter choices is equal to create
             when( expression  {params.action == 'create'})
             steps{
