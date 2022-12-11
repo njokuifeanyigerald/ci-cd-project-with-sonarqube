@@ -61,17 +61,17 @@ pipeline {
             }
         }
 
-        stage('Delete Deployment'){
-            when{expression {params.action == "destroy"}}
+        // stage('Delete Deployment'){
+        //     when{expression {params.action == "destroy"}}
 
-            steps{
-                script{
-                    def apply =  false
-                    try{
-                        input message: 
-                    }
-                }
-            }
-        }
+        //     steps{
+        //         script{
+        //             def apply =  false
+        //             try{
+        //                 input message: 
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
