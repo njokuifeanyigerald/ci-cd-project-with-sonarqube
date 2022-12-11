@@ -54,8 +54,21 @@ pipeline {
 
                         // to apply all yaml k8s manifest files
                         sh """
-                            kubeclt apply -f .
+                            kubectl apply -f .
                             """;
+                    }
+                }
+            }
+        }
+
+        stage('Delete Deployment'){
+            when{expression {params.action == "destroy"}}
+
+            steps{
+                script{
+                    def apply =  false
+                    try{
+                        input message: 
                     }
                 }
             }
