@@ -7,14 +7,14 @@ pipeline {
         string(name: "region", defaultValue: 'eu-west-2', description: "Eks cluster region")
     }
 
-    environment{
-        // already created the keys in the manage credentials in my local jenkins
-        //  you can do yours online using AWS,GCP, AZURE
+    // environment{
+    //     // already created the keys in the manage credentials in my local jenkins
+    //     //  you can do yours online using AWS,GCP, AZURE
 
-        ACCESS_KEY =  credentials('aws_access_key_id')
-        SECRET_KEY = credentials('aws_secret_access_key')
+    //     ACCESS_KEY =  credentials('aws_access_key_id')
+    //     SECRET_KEY = credentials('aws_secret_access_key')
 
-    }
+    // }
 
     stages {
         stage('git checkout'){
@@ -66,9 +66,20 @@ pipeline {
 
         //     steps{
         //         script{
-        //             def apply =  false
+        //             def destroy =  false
         //             try{
-        //                 input message: 
+        //                 input message: 'please confirm the destroy to delete the deployments', ok: 'Ready to destroy the world'
+        //                 destroy = true
+
+        //             }
+        //             catch(err){
+        //                 destroy  = false
+        //                 CurrentBuild.result  = 'UNSTABLE'
+        //             }
+        //             if(destroy){
+        //                 sh """
+        //                     kubectl delete -f  .
+        //                     """;
         //             }
         //         }
         //     }

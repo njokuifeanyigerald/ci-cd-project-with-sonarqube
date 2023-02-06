@@ -20,5 +20,26 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+          requests:
+              memory: "128Mi"
+              cpu: "500m"
         ports:
         - containerPort: 9099
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 60
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 60
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          timeoutSeconds: 10
