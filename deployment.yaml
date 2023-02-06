@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: springboot-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: springboot
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: springboot
-        image: bopgeek/sonarqube:v1.latest
+        image: bopgeek/sonarqube:v1.latest  
         imagePullPolicy: Always
         resources:
           limits:
