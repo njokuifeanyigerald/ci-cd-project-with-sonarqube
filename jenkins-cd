@@ -51,11 +51,10 @@ pipeline {
                         CurrentBuild.result = 'UNSTABLE'
                     }
                     if(apply){
-
-                        // to apply all yaml k8s manifest files
-                        sh """
-                            kubectl apply -f .
-                            """;
+                        
+                        kubeconfig(credentialsId: 'myKubeConfig', serverUrl: 'https://192.168.59.101:8443') {
+                            sh 'kubectl apply -f .'
+                        }
                     }
                 }
             }
