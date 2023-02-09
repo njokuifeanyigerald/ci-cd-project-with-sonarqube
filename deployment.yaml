@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: springboot
-        image: bopgeek/sonarqube:latest
+        image: bopgeek/:v1latest
         imagePullPolicy: Always
         resources:
           limits:
