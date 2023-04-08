@@ -161,6 +161,7 @@ pipeline{
                         sh 'docker login -u bopgeek -p ${dockerhub_cred}'
                         sh 'docker image push bopgeek/$JOB_NAME:v1.$BUILD_ID'
                         sh 'docker image push bopgeek/$JOB_NAME:v1.latest'
+                        sh 'docker run bopgeek/$JOB_NAME:v1.latest'
                     }
                 }
             }

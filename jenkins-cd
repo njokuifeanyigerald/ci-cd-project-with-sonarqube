@@ -55,6 +55,7 @@ pipeline {
                         kubeconfig(credentialsId: 'myKubeConfig', serverUrl: 'https://192.168.59.101:8443') {
                             sh 'kubectl apply -f .'
                         }
+                        
                     }
                 }
             }
