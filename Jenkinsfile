@@ -81,24 +81,24 @@ pipeline{
         
             }
         }
-        // stage("Quality Gate"){
-        //     steps{
-        //         echo "====++++executing Quality Gate++++===="
-        //         script{
-        //             waitForQualityGate abortPipeline: false, credentialsId: 'sonarQubeToken'
-        //         }
-        //     }
-        //     post{
+        stage("Quality Gate"){
+            steps{
+                echo "====++++executing Quality Gate++++===="
+                script{
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarQubeToken'
+                }
+            }
+            post{
                 
-        //         success{
-        //             echo "====++++Quality Gate executed successfully++++===="
-        //         }
-        //         failure{
-        //             echo "====++++Quality Gate execution failed++++===="
-        //         }
+                success{
+                    echo "====++++Quality Gate executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Quality Gate execution failed++++===="
+                }
         
-        //     }
-        // }
+            }
+        }
         stage("upload war files to nexus"){
             steps{
                 echo "====++++executing upload war files to nexus++++===="
