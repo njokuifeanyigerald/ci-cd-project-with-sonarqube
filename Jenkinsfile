@@ -162,7 +162,14 @@ pipeline{
                     //     sh 'docker image push bopgeek/$JOB_NAME:v1.$BUILD_ID'
                     //     sh 'docker image push bopgeek/$JOB_NAME:v1.latest'
                     // }
-                    withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_cred')]) {
+                    // withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_cred')]) {
+                    //     // some block
+                    //     sh 'docker login -u tawanam -p ${docker_cred}'
+                    //     sh 'docker image push tawanam/$JOB_NAME:v1.$BUILD_ID'
+                    //     sh 'docker image push tawanam/$JOB_NAME:v1.latest'
+                    //     sh 'docker run tawanam/$JOB_NAME:v1.latest'
+                    // }
+                    withCredentials([string(credentialsId: 'dockerhub_pwd', variable: 'dockerhub_cred')]) {
                         // some block
                         sh 'docker login -u tawanam -p ${docker_cred}'
                         sh 'docker image push tawanam/$JOB_NAME:v1.$BUILD_ID'
