@@ -137,8 +137,8 @@ pipeline{
                 echo "====++++executing Docker Image Build++++===="
                 script {
                     sh "docker image build -t $JOB_NAME:v1.$BUILD_ID ."
-                    sh "docker image tag $JOB_NAME:v1.$BUILD_ID bopgeek/$JOB_NAME:v1.$BUILD_ID"
-                    sh "docker image tag $JOB_NAME:v1.$BUILD_ID bopgeek/$JOB_NAME:v1.latest"
+                    sh "docker image tag $JOB_NAME:v1.$BUILD_ID tawanam/$JOB_NAME:v1.$BUILD_ID"
+                    sh "docker image tag $JOB_NAME:v1.$BUILD_ID tawanam/$JOB_NAME:v1.latest"
                 }
             }
             post{
@@ -162,20 +162,15 @@ pipeline{
                     //     sh 'docker image push bopgeek/$JOB_NAME:v1.$BUILD_ID'
                     //     sh 'docker image push bopgeek/$JOB_NAME:v1.latest'
                     // }
-                    // withCredentials([string(credentialsId: 'docker_pass', variable: 'docker_cred')]) {
-                    //     // some block
-                    //     sh 'docker login -u tawanam -p ${docker_cred}'
-                    //     sh 'docker image push tawanam/$JOB_NAME:v1.$BUILD_ID'
-                    //     sh 'docker image push tawanam/$JOB_NAME:v1.latest'
-                    //     sh 'docker run tawanam/$JOB_NAME:v1.latest'
-                    // }
-                    withCredentials([string(credentialsId: 'dockerhub_pwd', variable: 'dockerhub_cred')]) {
-                        // some block
-                        sh 'docker login -u tawanam -p ${docker_cred}'
-                        sh 'docker image push tawanam/$JOB_NAME:v1.$BUILD_ID'
-                        sh 'docker image push tawanam/$JOB_NAME:v1.latest'
-                        sh 'docker run tawanam/$JOB_NAME:v1.latest'
-                    }
+                    
+                    withCredentials([string(credentialsId: 'docker_pass', variable: 'dockerhub_cred')]) {
+                    // some block
+                    sh 'docker login -u tawanam -p ${dockerhub_cred}'
+                    sh 'docker image push tawanam/$JOB_NAME:v1.$BUILD_ID'
+                    sh 'docker image push tawanam/$JOB_NAME:v1.latest'
+                    sh 'docker rmi tawanam/$JOB_NAME:v1.$BUILD_ID'
+                    sh 'docker rmi tawanam/$JOB_NAME:v1.latest'
+                }
                 }
             }
             post{
