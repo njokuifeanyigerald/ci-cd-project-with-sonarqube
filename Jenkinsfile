@@ -61,84 +61,84 @@ pipeline{
         
             }
         }
-        // stage("Static Code Analysis"){
-        //     steps{
-        //         echo "====++++executing Static Code Analysis++++===="
-        //         script{
-        //             withSonarQubeEnv(credentialsId: 'sonarQubeToken') {
-        //                 // some block
-        //                 sh 'mvn clean package sonar:sonar'
-        //             }
-        //         }  
-        //     }
-        //     post{
-        //         success{
-        //             echo "====++++Static Code Analysis executed successfully++++===="
-        //         }
-        //         failure{
-        //             echo "====++++Static Code Analysis execution failed++++===="
-        //         }
+        stage("Static Code Analysis"){
+            steps{
+                echo "====++++executing Static Code Analysis++++===="
+                script{
+                    withSonarQubeEnv(credentialsId: 'sonarQubeToken') {
+                        // some block
+                        sh 'mvn clean package sonar:sonar'
+                    }
+                }  
+            }
+            post{
+                success{
+                    echo "====++++Static Code Analysis executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Static Code Analysis execution failed++++===="
+                }
         
-        //     }
-        // }
-        // stage("Quality Gate"){
-        //     steps{
-        //         echo "====++++executing Quality Gate++++===="
-        //         script{
-        //             waitForQualityGate abortPipeline: false, credentialsId: 'sonarQubeToken'
-        //         }
-        //     }
-        //     post{
+            }
+        }
+        stage("Quality Gate"){
+            steps{
+                echo "====++++executing Quality Gate++++===="
+                script{
+                    waitForQualityGate abortPipeline: false, credentialsId: 'sonarQubeToken'
+                }
+            }
+            post{
                 
-        //         success{
-        //             echo "====++++Quality Gate executed successfully++++===="
-        //         }
-        //         failure{
-        //             echo "====++++Quality Gate execution failed++++===="
-        //         }
+                success{
+                    echo "====++++Quality Gate executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Quality Gate execution failed++++===="
+                }
         
-        //     }
-        // }
-        // stage("upload war files to nexus"){
-        //     steps{
-        //         echo "====++++executing upload war files to nexus++++===="
-        //         script{
-        //             // to automatically read the pom.xml file inorder to get the version
-        //             def readPomVersion = readMavenPom file: 'pom.xml'
+            }
+        }
+        stage("upload war files to nexus"){
+            steps{
+                echo "====++++executing upload war files to nexus++++===="
+                script{
+                    // to automatically read the pom.xml file inorder to get the version
+                    def readPomVersion = readMavenPom file: 'pom.xml'
 
-        //             // if it ends with snapshot
-        //             def nexusRepo = readPomVersion.version.endsWith("SNAPSHOT") ? "demoapp-snapshot" : "demoapp"
+                    // if it ends with snapshot
+                    def nexusRepo = readPomVersion.version.endsWith("SNAPSHOT") ? "demoapp-snapshot" : "demoapp"
                     
-        //             nexusArtifactUploader artifacts: [
-        //                 [
-        //                     artifactId: 'springboot',
-        //                     classifier: '', file: 'target/Uber.jar', type: 'jar'
-        //                 ]
-        //             ],
-        //             credentialsId: 'Nexus-auth', groupId: 'com.example',
-        //             nexusUrl: '127.0.0.1:8081', nexusVersion: 'nexus3', 
-        //             protocol: 'http', repository: nexusRepo, version: "${readPomVersion.version}"
-        //         }
+                    nexusArtifactUploader artifacts: [
+                        [
+                            artifactId: 'springboot',
+                            classifier: '', file: 'target/Uber.jar', type: 'jar'
+                        ]
+                    ],
+                    credentialsId: 'Nexus-auth', groupId: 'com.example',
+                    nexusUrl: '127.0.0.1:8081', nexusVersion: 'nexus3', 
+                    protocol: 'http', repository: nexusRepo, version: "${readPomVersion.version}"
+                }
 
-        //     }
-        //     post{
-        //         success{
-        //             echo "====++++upload war files to nexus executed successfully++++===="
-        //         }
-        //         failure{
-        //             echo "====++++upload war files to nexus execution failed++++===="
-        //         }
+            }
+            post{
+                success{
+                    echo "====++++upload war files to nexus executed successfully++++===="
+                }
+                failure{
+                    echo "====++++upload war files to nexus execution failed++++===="
+                }
         
-        //     }
-        // }
+            }
+        }
 
         stage("Docker Image Build"){
             steps{
                 echo "====++++executing Docker Image Build++++===="
                 script {
                     sh "docker image build -t $JOB_NAME:v1.$BUILD_ID ."
-                    sh "docker image tag $JOB_NAME:v1.$BUILD_ID tawanam/$JOB_NAME:v1.$BUILD_ID"
-                    sh "docker image tag $JOB_NAME:v1.$BUILD_ID tawanam/$JOB_NAME:v1.latest"
+                    sh "docker image tag $JOB_NAME:v1.$BUILD_ID bopgeek/$JOB_NAME:v1.$BUILD_ID"
+                    sh "docker image tag $JOB_NAME:v1.$BUILD_ID bopgeek/$JOB_NAME:v1.latest"
                 }
             }
             post{
@@ -156,21 +156,13 @@ pipeline{
             steps{
                 echo "====++++executing push image to dockerHub++++===="
                 script{
-                    // withCredentials([string(credentialsId: 'dockerhub_pwd', variable: 'dockerhub_cred')]) {
-                    //     // some block
-                    //     sh 'docker login -u bopgeek -p ${dockerhub_cred}'
-                    //     sh 'docker image push bopgeek/$JOB_NAME:v1.$BUILD_ID'
-                    //     sh 'docker image push bopgeek/$JOB_NAME:v1.latest'
-                    // }
-                    
-                    withCredentials([string(credentialsId: 'docker_pass', variable: 'dockerhub_cred')]) {
-                    // some block
-                    sh 'docker login -u tawanam -p ${dockerhub_cred}'
-                    sh 'docker image push tawanam/$JOB_NAME:v1.$BUILD_ID'
-                    sh 'docker image push tawanam/$JOB_NAME:v1.latest'
-                    sh 'docker rmi tawanam/$JOB_NAME:v1.$BUILD_ID'
-                    sh 'docker rmi tawanam/$JOB_NAME:v1.latest'
-                }
+                    withCredentials([string(credentialsId: 'dockerhub_pwd', variable: 'dockerhub_cred')]) {
+                        // some block
+                        sh 'docker login -u bopgeek -p ${dockerhub_cred}'
+                        sh 'docker image push bopgeek/$JOB_NAME:v1.$BUILD_ID'
+                        sh 'docker image push bopgeek/$JOB_NAME:v1.latest'
+                    }
+
                 }
             }
             post{
